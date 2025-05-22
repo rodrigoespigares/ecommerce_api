@@ -1,5 +1,6 @@
 package com.ecommerce.Ecommerce.models;
 
+import com.ecommerce.Ecommerce.dto.UserDto;
 import com.ecommerce.Ecommerce.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.*;
@@ -85,5 +86,18 @@ public class User {
 
     public void setPermission(int permission) {
         this.permission = permission;
+    }
+
+
+    public UserDto toUserDto(){
+        UserDto userDto = new UserDto();
+
+        userDto.setId(this.getId());
+        userDto.setApi_key(this.getApi_key());
+        userDto.setEmail(this.getEmail());
+        userDto.setUsuario(this.getUsuario());
+        userDto.setIs_validated(this.getIs_validated());
+
+        return userDto;
     }
 }

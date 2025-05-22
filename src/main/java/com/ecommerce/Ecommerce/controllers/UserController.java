@@ -2,6 +2,7 @@ package com.ecommerce.Ecommerce.controllers;
 
 
 import com.ecommerce.Ecommerce.components.JwtTokenProvider;
+import com.ecommerce.Ecommerce.dto.UserDto;
 import com.ecommerce.Ecommerce.models.User;
 import com.ecommerce.Ecommerce.dto.LoginRequest;
 import com.ecommerce.Ecommerce.services.EmailService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 @RestController
@@ -83,6 +85,29 @@ public class UserController {
         } catch (BadCredentialsException ex) {
             response.put("error", "Credenciales inválidas");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+
+    @GetMapping("users/{id}")
+    public ResponseEntity<Map<String, Object>> profile(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<UserDto> userDtoOpt = userService.findUserById(id);
+
+            if (userDtoOpt.isPresent()) {
+                response.put("status", "success");
+                response.put("data", userDtoOpt.get());
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("status", "error");
+                response.put("message", "Usuario no encontrado.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("status", "error");
+            response.put("message", "Ocurrió un error al buscar el usuario.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

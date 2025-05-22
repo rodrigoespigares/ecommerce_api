@@ -1,11 +1,13 @@
 package com.ecommerce.Ecommerce.services;
 
+import com.ecommerce.Ecommerce.dto.UserDto;
 import com.ecommerce.Ecommerce.models.User;
 import com.ecommerce.Ecommerce.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -14,5 +16,9 @@ public class UserService {
 
     public User saveUser(User user){
         return userRepository.save(user);
+    }
+
+    public Optional<UserDto> findUserById(Long id) {
+        return userRepository.findById(id).map(User::toUserDto);
     }
 }
