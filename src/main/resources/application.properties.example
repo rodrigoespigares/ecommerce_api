@@ -1,0 +1,20 @@
+spring.application.name=Ecommerce
+server.port = 8000
+
+spring.datasource.url=jdbc:mysql://localhost:3306/{TU_TABLA}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+spring.datasource.username={TU_USUARIO}
+spring.datasource.password={TU_CONTRASEÑA}
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.auth=true
+spring.mail.starttls=true
+spring.mail.username={TU_EMAIL}
+spring.mail.password={TU_PASSWORD}
+
+
+jwt.secret={JWT_PASSWORD}
+jwt.expiration=86400000 // tiempo de expiración el mio es de 1 día
