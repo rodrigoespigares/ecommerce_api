@@ -38,7 +38,7 @@ public class UserController {
     private UserDetailsService userDetailsService;
 
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<Map<String, String>> registro(@RequestBody User user){
         Map<String, String> response = new HashMap<>();
         try{
@@ -66,7 +66,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
         Map<String, String> response = new HashMap<>();
         try {
