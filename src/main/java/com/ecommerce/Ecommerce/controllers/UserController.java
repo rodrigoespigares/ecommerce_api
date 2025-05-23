@@ -2,7 +2,8 @@ package com.ecommerce.Ecommerce.controllers;
 
 
 import com.ecommerce.Ecommerce.components.JwtTokenProvider;
-import com.ecommerce.Ecommerce.dto.UserDto;
+import com.ecommerce.Ecommerce.dto.ChangePasswordRequest;
+import com.ecommerce.Ecommerce.dto.PorfileRequest;
 import com.ecommerce.Ecommerce.models.User;
 import com.ecommerce.Ecommerce.dto.LoginRequest;
 import com.ecommerce.Ecommerce.services.EmailService;
@@ -18,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -38,6 +40,8 @@ public class UserController {
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @PostMapping("/auth/register")
@@ -92,7 +96,7 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> profile(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Optional<UserDto> userDtoOpt = userService.findUserById(id);
+            Optional<PorfileRequest> userDtoOpt = userService.findUserById(id);
 
             if (userDtoOpt.isPresent()) {
                 response.put("status", "success");
@@ -109,6 +113,30 @@ public class UserController {
             response.put("message", "Ocurrió un error al buscar el usuario.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    @PutMapping("users/{id}")
+    public ResponseEntity<Map<String, String>> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest request) {
+        Optional<User> userOpt = userService.findById(id);
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "Usuario no encontrado"));
+        }
+
+        User user = userOpt.get();
+
+        // Verificar contraseña actual
+        if (!passwordEncoder.matches(request.getPassword_actual(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "La contraseña actual es incorrecta"));
+        }
+
+        // Establecer nueva contraseña
+        user.setPassword(passwordEncoder.encode(request.getNew_password()));
+        userService.save(user);
+
+        return ResponseEntity.ok(Map.of("message", "Contraseña actualizada correctamente"));
     }
 
 

@@ -1,13 +1,8 @@
 package com.ecommerce.Ecommerce.models;
 
-import com.ecommerce.Ecommerce.dto.UserDto;
-import com.ecommerce.Ecommerce.services.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ecommerce.Ecommerce.dto.PorfileRequest;
 import org.springframework.security.crypto.bcrypt.*;
 import jakarta.persistence.*;
-
-import java.security.SecureRandom;
-import java.util.Random;
 
 @Entity
 @Table(name = "users")
@@ -89,8 +84,8 @@ public class User {
     }
 
 
-    public UserDto toUserDto(){
-        UserDto userDto = new UserDto();
+    public PorfileRequest toUserDto(){
+        PorfileRequest userDto = new PorfileRequest();
 
         userDto.setId(this.getId());
         userDto.setApi_key(this.getApi_key());

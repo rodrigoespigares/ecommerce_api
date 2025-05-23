@@ -1,6 +1,6 @@
 package com.ecommerce.Ecommerce.dto;
 
-public class UserDto {
+public class PorfileRequest {
 
     private Long id;
     private String usuario;

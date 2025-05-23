@@ -72,7 +72,7 @@ Durante el desarrollo de esta API REST para ecommerce, quiero aprender y aplicar
 - `POST /auth/register` — Registro de usuario  
 - `POST /auth/login` — Login y obtención de JWT  
 - `GET /users/{id}` — Obtener perfil de usuario  
-- `PUT /users/{id}` — Actualizar datos de usuario 
+- `PUT /users/{id}` — Actualizar la contraseña del usuario  
 
 ---
 
