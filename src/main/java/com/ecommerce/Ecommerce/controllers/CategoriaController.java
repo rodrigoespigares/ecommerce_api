@@ -75,4 +75,41 @@ public class CategoriaController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> edit(@PathVariable Long id, @RequestBody CategoriaRequest categoriaRequest){
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Categoria categoria = categoriaService.update(id, categoriaRequest);
+
+            response.put("status", "success");
+            response.put("data", categoria);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Categoría no encontrada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable Long id){
+        Map<String, String> response = new HashMap<>();
+
+        try{
+
+            categoriaService.delete(id);
+            response.put("status", "success");
+            response.put("message", "Categoría borrada");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+
+        }catch(Exception e){
+            response.put("status", "error");
+            response.put("message", "Categoría no encontrada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+
+    }
 }
